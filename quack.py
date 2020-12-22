@@ -7,7 +7,6 @@ import os
 import random
 import string
 import sys
-import toml
 
 # Create our parser object and define the URL param we take
 parser = argparse.ArgumentParser(description="A Github Pages based URL shortener.")
@@ -23,23 +22,22 @@ HTML_RESULT = """<!DOCTYPE html>
 </head>
 </html>""".format(target=args.url)
 
-# Attempt to load in the config file, gracefully handing the case
+# Attempt to load in the config file, gracefully handing the cases
 # where we can't for whatever reason.
+config = configparser.ConfigParser()
 try:
-    toml_config = toml.load('duck.toml')
-    config = configparser.ConfigParser()
-    config.read('config')
-except OSError as exception:
+    config.read('duck.ini')
+except configparser.Error as exception:
     print(exception)
-    print("Error opening the config file. Quitting...")
+    print("Error parsing the config file. Quitting...")
     sys.exit(1)
 
 SLUG = ''
-slug_length = toml_config['options']['sluglength']
-for length in range(slug_length):
+slug_length = config.get('options', 'sluglength')
+for length in range(int(slug_length)):
     SLUG = SLUG + random.choice(string.ascii_letters)
 
-site_dir = toml_config['config']['sitedir']
+site_dir = config.get('config', 'sitedir')
 
 # Do some sanity checking
 if not os.path.isdir(site_dir):
