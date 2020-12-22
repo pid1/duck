@@ -1,0 +1,5 @@
+[config]
+sitedir = "mycoolsite"
+
+[options]
+sluglength = 2
