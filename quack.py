@@ -19,6 +19,7 @@ HTML_RESULT = """<!DOCTYPE html>
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="Refresh" content="0; url='{target}'" />
+    <title>Redirecting...</title>
     <link rel="icon" type="image/png" href="data:image/png;base64,">
 </head>
 </html>""".format(target=args.url)
