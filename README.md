@@ -10,7 +10,7 @@ By updating `duck.ini` with the directory containing your Github Pages site (or 
 You can also configure the slug length by updating `duck.ini`.
 
 ## Demo
-You can see this in action at http://pid1.pw/duck
+You can see this in action at https://pid1.pw/duck
 
 The Github Pages repository that powers the demo above is available (here)[https://github.com/pid1/redirect].
 
