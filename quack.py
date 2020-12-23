@@ -9,12 +9,13 @@ import re
 import string
 import sys
 
-# Create our parser object and define the URL param we take
+# Create our parser object, define the URL params we take, and parse them
 parser = argparse.ArgumentParser(description="A Github Pages based URL shortener.")
 parser.add_argument("url", help="The target URL.")
 parser.add_argument("--slug", help="Define the slug manually")
 args = parser.parse_args()
 
+# This generaes a minimally viable HTML that performs the browser redirection.
 HTML_RESULT = """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,6 +26,8 @@ HTML_RESULT = """<!DOCTYPE html>
 </head>
 </html>""".format(target=args.url)
 
+# We assume that if this string occurs in any HTML file within the target directory, this means
+# we already have a slug for the given target URL.
 DUP_CHECK = """<meta http-equiv="Refresh" content="0; url='{target}'" />""".format(target=args.url)
 
 # Attempt to load in the config file, gracefully handing the cases
@@ -36,7 +39,10 @@ except configparser.Error as exception:
     print(exception)
     print("Error parsing the config file. Quitting...")
     sys.exit(1)
+site_dir = config.get('config', 'sitedir')
 
+# If the user provides a custom slug, use that. Otherwise, auto-generate
+# a slug.
 SLUG = ''
 if args.slug:
     SLUG = args.slug
@@ -44,8 +50,6 @@ else:
     slug_length = config.get('options', 'sluglength')
     for length in range(int(slug_length)):
         SLUG = SLUG + random.choice(string.ascii_letters)
-
-site_dir = config.get('config', 'sitedir')
 
 # Do some sanity checking
 
