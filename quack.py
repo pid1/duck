@@ -12,6 +12,7 @@ import sys
 # Create our parser object and define the URL param we take
 parser = argparse.ArgumentParser(description="A Github Pages based URL shortener.")
 parser.add_argument("url", help="The target URL.")
+parser.add_argument("--slug", help="Define the slug manually")
 args = parser.parse_args()
 
 HTML_RESULT = """<!DOCTYPE html>
@@ -37,20 +38,28 @@ except configparser.Error as exception:
     sys.exit(1)
 
 SLUG = ''
-slug_length = config.get('options', 'sluglength')
-for length in range(int(slug_length)):
-    SLUG = SLUG + random.choice(string.ascii_letters)
+if args.slug:
+    SLUG = args.slug
+else:
+    slug_length = config.get('options', 'sluglength')
+    for length in range(int(slug_length)):
+        SLUG = SLUG + random.choice(string.ascii_letters)
 
 site_dir = config.get('config', 'sitedir')
 
 # Do some sanity checking
+
+# Ensure the site directory exists
 if not os.path.isdir(site_dir):
     print("Configured site directory doesn't exist. Quitting...")
     sys.exit(1)
+
+# Ensure the slug doesn't exist already
 if os.path.isfile(site_dir + '/' + SLUG + '.html'):
-    print("Slug already exists, please re-run \
-    to regenerate the slug. Quitting...")
+    print("Slug already exists, please re-run to regenerate the slug. Quitting...")
     sys.exit(1)
+
+# Check for duplicates
 for root, dirs, files in os.walk(site_dir):
     for name in files:
         file_extension = os.path.splitext(name)
@@ -66,6 +75,7 @@ for root, dirs, files in os.walk(site_dir):
                 sys.exit(0)
             to_check.close()
 
+# Write out our Refresh file
 try:
     writefile = open(site_dir + '/' + SLUG + '.html', 'x')
     writefile.write(HTML_RESULT)
@@ -74,4 +84,6 @@ except OSError as exception:
     print(exception)
     print("Error saving the site file. Quitting...")
     sys.exit(1)
+
+# Let the user know we succeeded and give them the slug
 print("Success! Slug is " + SLUG)
