@@ -14,9 +14,15 @@ Optionally, pass the `--slug` argument to use a custom slug. This bypasses the c
 You can also configure the slug length by updating `duck.ini`.
 
 ## Demo
-You can see this in action at https://pid1.pw/duck
+You can see this in action at the following URLs.
 
-The Github Pages repository that powers the demo above is available [here](https://github.com/pid1/redirect).
+https://pid1.pw/duck redirects to https://github.com/pid1/duck
+
+https://pid1.pw/HM redirects to https://youtube.com
+
+https://pid1.pw/fb redirects to https://facebook.com
+
+The Github Pages repository that powers the pid1.pw demo above is available [here](https://github.com/pid1/redirect).
 
 ## Improvements
 * Instead of bailing out, simply regenerate the slug until we find one that has not been used. Implement a base case based on the configured maximum slug length so we don't loop forever.
