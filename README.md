@@ -1,5 +1,5 @@
-# duck
-An HTML-based URL shortener for static sites. 🦆
+# duck 🦆
+An HTML-based URL shortener for static sites.
 
 ![Demo Gif](demo.gif)
 
