@@ -11,6 +11,5 @@ You can also configure the slug length by updating `duck.ini`.
 
 ## Improvements
 
-* Implement a small os.walk function and some regex to check and see if we have an existing slug that points to the provided target URL.
 * Instead of bailing out, simply regenerate the slug until we find one that has not been used. Implement a base case based on the configured maximum slug length so we don't loop forever.
 * Make the slug length a maximum potential length, not hardcoded length, to increase our pool of available slugs.
