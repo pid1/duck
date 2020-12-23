@@ -18,7 +18,7 @@ You can see this in action at the following URLs.
 
 https://pid1.pw/duck redirects to https://github.com/pid1/duck
 
-https://pid1.pw/HM redirects to https://youtube.com
+https://pid1.pw/GM redirects to https://youtube.com
 
 https://pid1.pw/fb redirects to https://facebook.com
 
