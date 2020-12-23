@@ -27,3 +27,4 @@ The Github Pages repository that powers the pid1.pw demo above is available [her
 ## Improvements
 * Instead of bailing out, simply regenerate the slug until we find one that has not been used. Implement a base case based on the configured maximum slug length so we don't loop forever.
 * Make the slug length a maximum potential length, not hardcoded length, to increase our pool of available slugs.
+* When using `--slug` with duplicate slugs, don't present the regeneration message and instead just inform the user that the slug is already in use.
