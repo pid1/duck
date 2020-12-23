@@ -1,6 +1,8 @@
 # duck
 An HTML-based URL shortener for static sites. 🦆
 
+![Demo Gif](demo.gif)
+
 ## Usage
 
 `./quack.py <url>` dumps out a small HTML file that contains a meta tag with a Refresh element and a target URL. This will redirect browsers to the provided target URL. The filename is the shorturl of the target resource. 
