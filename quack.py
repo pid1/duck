@@ -9,6 +9,26 @@ import re
 import string
 import sys
 
+
+def duplicate_check(checkstring, site_directory):
+    """Given a site directory and a test string, check to see if we've already created
+    a .html file containing this test string"""
+    for root, dir, files in os.walk(site_directory):  # pylint: disable=unused-variable,redefined-builtin
+        for name in files:
+            file_extension = os.path.splitext(name)
+            if file_extension[1] == ".html":
+                try:
+                    to_check = open(site_directory + '/' + name, 'r')
+                except OSError as exception:
+                    print(exception)
+                    print("Failed to open site file for duplicate checking.")
+                    sys.exit(1)
+                if re.search(checkstring, to_check.read()):
+                    print("This target already exists as slug " + file_extension[0])
+                    sys.exit(0)
+                to_check.close()
+
+
 # Create our parser object, define the URL params we take, and parse them
 parser = argparse.ArgumentParser(description="A Github Pages based URL shortener.")
 parser.add_argument("url", help="The target URL.")
@@ -37,7 +57,7 @@ try:
     config.read('duck.ini')
 except configparser.Error as exception:
     print(exception)
-    print("Error parsing the config file. Quitting...")
+    print("Error parsing the config file.")
     sys.exit(1)
 site_dir = config.get('config', 'sitedir')
 
@@ -55,29 +75,20 @@ else:
 
 # Ensure the site directory exists
 if not os.path.isdir(site_dir):
-    print("Configured site directory doesn't exist. Quitting...")
+    print("Configured site directory doesn't exist.")
     sys.exit(1)
 
 # Ensure the slug doesn't exist already
 if os.path.isfile(site_dir + '/' + SLUG + '.html'):
-    print("Slug already exists, please re-run to regenerate the slug. Quitting...")
-    sys.exit(1)
+    if args.slug:
+        print("Slug already exists.")
+        sys.exit(1)
+    else:
+        print("Slug already exists, please re-run to regenerate the slug.")
+        sys.exit(1)
 
 # Check for duplicates
-for root, dirs, files in os.walk(site_dir):
-    for name in files:
-        file_extension = os.path.splitext(name)
-        if file_extension[1] == ".html":
-            try:
-                to_check = open(site_dir + '/' + name, 'r')
-            except OSError as exception:
-                print(exception)
-                print("Failed to open site file for duplicate checking. Quitting...")
-                sys.exit(1)
-            if re.search(DUP_CHECK, to_check.read()):
-                print("This target already exists as slug " + file_extension[0])
-                sys.exit(0)
-            to_check.close()
+duplicate_check(DUP_CHECK, site_dir)
 
 # Write out our Refresh file
 try:
@@ -86,7 +97,7 @@ try:
     writefile.close()
 except OSError as exception:
     print(exception)
-    print("Error saving the site file. Quitting...")
+    print("Error saving the site file.")
     sys.exit(1)
 
 # Let the user know we succeeded and give them the slug
