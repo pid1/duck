@@ -26,4 +26,3 @@ You can see this in action at the following URLs.
 `https://pid1.pw/fb` redirects to `https://facebook.com`
 
 The GitHub Pages repository that powers the pid1.pw demo above is available [here](https://github.com/pid1/redirect).
-
