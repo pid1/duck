@@ -1,5 +1,6 @@
 # duck 🦆
 [![GitHub Super-Linter](https://github.com/pid1/duck/workflows/Linting/badge.svg)](https://github.com/marketplace/actions/super-linter)
+
 An HTML-based URL shortener for static sites.
 ![Demo Gif](demo.gif)
 
