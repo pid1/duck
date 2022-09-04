@@ -26,18 +26,19 @@ HTML_RESULT = f"""<!DOCTYPE html>
 </head>
 </html>"""
 
+
 # Check for duplicate target URLs
 def duplicate_url_check(checkstring, site_directory):
     """Given a site directory and a test string, check to see if we've already created
     a .html file containing this test string"""
     for root, directory, files in os.walk(
         site_directory
-        ): #pylint: disable-unused-variable
+    ):  # pylint: disable-unused-variable
         for name in files:
             file_name = os.path.splitext(name)
             if file_name[1] == ".html":
                 try:
-                    to_check = open(site_directory  + "/" + name, "r", encoding="utf-8")
+                    to_check = open(site_directory + "/" + name, "r", encoding="utf-8")
                 except OSError as open_exception:
                     print(open_exception)
                     print("Failed to open site file for duplicate checking.")
@@ -52,13 +53,13 @@ def duplicate_url_check(checkstring, site_directory):
 def sluggen(slug_length, site_directory):
     """Generate a random slug, checking for duplicates"""
     try:
-        slug = ''.join(
+        slug = "".join(
             random.choice(string.ascii_lowercase) for _ in range(slug_length)
         )
         while os.path.isfile(site_directory + "/" + slug + ".html"):
             sluggen(slug_length, site_directory)
         return slug
-    except RecursionError as exception:
+    except RecursionError:
         print("Failed to generate a slug. Try increasing the maximum slug length.")
         sys.exit(1)
 
@@ -70,8 +71,7 @@ def main():
     config = configparser.ConfigParser()
     try:
         config.read("duck.ini")
-    except configparser.Error as exception:
-        print(exception)
+    except configparser.Error:
         print("Error parsing the config file.")
         sys.exit(1)
     site_dir = config.get("config", "sitedir")
@@ -110,8 +110,7 @@ def main():
         writefile = open(site_dir + "/" + slug + ".html", "x", encoding="utf-8")
         writefile.write(HTML_RESULT)
         writefile.close()
-    except OSError as exception:
-        print(exception)
+    except OSError:
         print("Error saving the site file.")
         sys.exit(1)
 
