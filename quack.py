@@ -53,7 +53,7 @@ def sluggen(slug_length, site_directory):
         while os.path.isfile(site_directory + '/' + slug + '.html'):
             sluggen(slug_length, site_directory)
         return slug
-    except OSError as exception:
+    except RecursionError as exception:
         print("Failed to generate a slug. Try increasing the maximum slug length.")
         sys.exit(1)
 
