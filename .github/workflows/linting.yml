@@ -35,4 +35,6 @@ jobs:
           VALIDATE_PYTHON_RUFF_FORMAT: false
           VALIDATE_SPELL_CODESPELL: false
           VALIDATE_YAML_PRETTIER: false
+          # Terminology rules fight the prose here more than they help.
+          VALIDATE_NATURAL_LANGUAGE: false
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
